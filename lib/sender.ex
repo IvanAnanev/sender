@@ -20,27 +20,27 @@ defmodule Sender do
     list
     |> Enum.each(fn x -> Sender.QueueAgent.push(rem(x, 100), x) end)
 
-    pull_agent()
+    # pull_agent()
   end
 
   def push_ets(list) do
     list
-    |> Enum.each(fn x -> Sender.QueueEts.push(rem(x, 100), x) end)
+    |> Enum.each(fn x -> Sender.QueueEts2.push(rem(x, 100), x) end)
 
-    pull_ets()
+    # pull_ets()
   end
 
   defp pull_agent() do
     case Sender.QueueAgent.pull() do
       :empty -> :ok
-      _ -> Sender.QueueAgent.pull()
+      _ -> pull_agent()
     end
   end
 
   defp pull_ets() do
-    case Sender.QueueEts.pull() do
+    case Sender.QueueEts2.pull() do
       :empty -> :ok
-      _ -> Sender.QueueEts.pull()
+      _ -> pull_ets()
     end
   end
 end

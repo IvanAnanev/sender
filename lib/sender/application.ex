@@ -11,8 +11,8 @@ defmodule Sender.Application do
       # Starts a worker by calling: Sender.Worker.start_link(arg)
       # {Sender.Worker, arg},
       {Sender.QueueAgent, []},
-      {Sender.QueueEts, []}
-
+      {Sender.QueueEts, []},
+      {Sender.QueueEts2, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
