@@ -3,6 +3,10 @@ defmodule Sender.Queue.Base do
   Sender.Queue.Ваse модуль содержит общую логику для очередей
   сообщений с приоритетом
 
+  что б прикрутить:
+
+    use Sender.Queue.Base, type: :some_type
+
   Очередь с приоритетом.
   Представляет из себя :ets таблицу :ordered_set
   в которой по integer ключу хранится :queue {[],[]}.
