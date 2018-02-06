@@ -66,7 +66,7 @@ defmodule Sender.QueueEts2 do
 
   def terminate(reason, _state) do
     :ets.tab2file(@table, dump_file())
-    Logger.info("[#{__MODULE__}] Save queue table in dump")
+    Logger.info("Save queue table in dump")
     reason
   end
 
@@ -75,13 +75,13 @@ defmodule Sender.QueueEts2 do
     # загружаем из дампа
     case :ets.file2tab(dump_file()) do
       {:ok, _} ->
-        Logger.info("[#{__MODULE__}] Load queue table from dump")
+        Logger.info("Load queue table from dump")
         :ok
 
       # при первом запуске создаем с нуля
       {:error, _} ->
         :ets.new(@table, [:ordered_set, :named_table])
-        Logger.info("[#{__MODULE__}] Create queue table")
+        Logger.info("Create queue table")
     end
   end
 
