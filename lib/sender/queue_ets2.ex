@@ -1,14 +1,18 @@
 defmodule Sender.QueueEts2 do
-  use GenServer
+  use GenServer, shutdown: :infinity
+  require Logger
 
   @table :queue_ets_2
+  @dump_folder :queue_dumps
 
   def start_link(_) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
   def init(_) do
-    :ets.new(@table, [:ordered_set, :private, :named_table])
+    # для ожидания стоп сигнала
+    Process.flag(:trap_exit, true)
+    init_ets_table()
     {:ok, %{}}
   end
 
@@ -59,4 +63,27 @@ defmodule Sender.QueueEts2 do
   def handle_call(_, _, state), do: {:noreply, state}
 
   def handke_info(_, state), do: {:noreply, state}
+
+  def terminate(reason, _state) do
+    :ets.tab2file(@table, dump_file())
+    Logger.info("[#{__MODULE__}] Save queue table in dump")
+    reason
+  end
+
+  # инитим ets таблицу
+  defp init_ets_table() do
+    # загружаем из дампа
+    case :ets.file2tab(dump_file()) do
+      {:ok, _} ->
+        Logger.info("[#{__MODULE__}] Load queue table from dump")
+        :ok
+
+      # при первом запуске создаем с нуля
+      {:error, _} ->
+        :ets.new(@table, [:ordered_set, :named_table])
+        Logger.info("[#{__MODULE__}] Create queue table")
+    end
+  end
+
+  defp dump_file(), do: "#{@dump_folder}/#{@table}" |> to_charlist()
 end
