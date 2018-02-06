@@ -6,6 +6,8 @@ config :logger, :console,
   metadata: [:module],
   format: "\n$time [$metadata][$level] $levelpad$message\n"
 
+config :sender, queue_dump_folder: :queue_dumps
+
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
 # file won't be loaded nor affect the parent project. For this reason,

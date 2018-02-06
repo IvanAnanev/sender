@@ -12,7 +12,7 @@ defmodule Sender.Application do
       # {Sender.Worker, arg},
       # {Sender.QueueAgent, []},
       # {Sender.QueueEts, []},
-      {Sender.QueueEts2, []}
+      {Sender.Queue.Email, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
