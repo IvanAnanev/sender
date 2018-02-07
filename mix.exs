@@ -15,7 +15,7 @@ defmodule Sender.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Sender.Application, []}
+      mod: {Sender, []}
     ]
   end
 

@@ -1,46 +1,21 @@
 defmodule Sender do
-  @moduledoc """
-  Documentation for Sender.
-  """
+  # See https://hexdocs.pm/elixir/Application.html
+  # for more information on OTP Applications
+  @moduledoc false
 
-  @doc """
-  Hello world.
+  use Application
 
-  ## Examples
+  def start(_type, _args) do
+    # List all child processes to be supervised
+    children = [
+      # Starts a worker by calling: Sender.Worker.start_link(arg)
+      # {Sender.Worker, arg},
+      {Sender.Queue.Email, []}
+    ]
 
-      iex> Sender.hello
-      :world
-
-  """
-  def hello do
-    :world
-  end
-
-  def push_agent(list) do
-    list
-    |> Enum.each(fn x -> Sender.QueueAgent.push(rem(x, 100), x) end)
-
-    # pull_agent()
-  end
-
-  def push_ets(list) do
-    list
-    |> Enum.each(fn x -> Sender.QueueEts2.push(rem(x, 100), x) end)
-
-    # pull_ets()
-  end
-
-  defp pull_agent() do
-    case Sender.QueueAgent.pull() do
-      :empty -> :ok
-      _ -> pull_agent()
-    end
-  end
-
-  defp pull_ets() do
-    case Sender.QueueEts2.pull() do
-      :empty -> :ok
-      _ -> pull_ets()
-    end
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
+    opts = [strategy: :one_for_one, name: Sender.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 end
