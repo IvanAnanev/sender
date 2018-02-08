@@ -10,7 +10,8 @@ defmodule Sender do
     children = [
       # Starts a worker by calling: Sender.Worker.start_link(arg)
       # {Sender.Worker, arg},
-      {Sender.Queue.Email, []}
+      {Sender.Queue.Email, []},
+      {Sender.MQ.Input, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
