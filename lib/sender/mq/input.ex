@@ -73,14 +73,16 @@ defmodule Sender.MQ.Input do
 
   # валидируем
   defp validate({:error, _} = e), do: e
+
   defp validate({:ok, msg_map}) do
-    {:ok, msg_map}
+    Sender.Helper.MsgValidator.exec(msg_map)
   end
 
   # ложим в очередь
   defp put_to_queue({:error, err_msg}), do: Logger.error(err_msg)
+
   defp put_to_queue({:ok, %{"type" => type, "priority" => priority} = msg}) do
     Logger.info("new message")
-    Logger.info(inspect msg)
+    Logger.info(inspect(msg))
   end
 end
