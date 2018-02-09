@@ -11,6 +11,10 @@ defmodule Sender do
       # Starts a worker by calling: Sender.Worker.start_link(arg)
       # {Sender.Worker, arg},
       {Sender.Queue.Email, []},
+      {Sender.Queue.Sms, []},
+      {Sender.Queue.Telegram, []},
+      {Sender.Queue.Wechat, []},
+      {Sender.Queue.Pusher, []},
       {Sender.MQ.Input, []}
     ]
 

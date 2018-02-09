@@ -81,8 +81,7 @@ defmodule Sender.MQ.Input do
   # ложим в очередь
   defp put_to_queue({:error, err_msg}), do: Logger.error(err_msg)
 
-  defp put_to_queue({:ok, %{"type" => type, "priority" => priority} = msg}) do
-    Logger.info("new message")
-    Logger.info(inspect(msg))
+  defp put_to_queue({:ok, msg}) do
+    Sender.Queue.Pusher.exec(msg)
   end
 end
