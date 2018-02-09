@@ -65,7 +65,8 @@ defmodule Sender.Queue.Pusher do
   # ложим в очередь
   defp push(%{"type" => type, "priority" => priority} = mq_msg) do
     queue_for_type(type).push(priority_index(priority), mq_msg)
-    Logger.info("Msg #{inspect mq_msg} is in queue")
+    # говорим MQ, что сообщение в очереди на отправку
+    Sender.MQ.Output.msg_queued(mq_msg["id"])
   end
 
   # определяем очередь по типу
