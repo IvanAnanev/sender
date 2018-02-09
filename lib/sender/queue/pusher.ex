@@ -44,13 +44,13 @@ defmodule Sender.Queue.Pusher do
         push(mq_msg)
       true ->
         # TODO: надо расширить логику для безопасного сохранения отправки сообщенй позже
-        :timer.send_after(diff * 1000, {:push_later, mq_msg})
+        Process.send_after(self(), {:push_later, mq_msg}, diff * 1000)
     end
 
     {:noreply, state}
   end
 
-  def handle_cast({:push_later, mq_msg}, state) do
+  def handle_info({:push_later, mq_msg}, state) do
     push(mq_msg)
 
     {:noreply, state}
