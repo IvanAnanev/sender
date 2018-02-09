@@ -7,9 +7,7 @@ defmodule Sender.MQ.Input do
 
   @resubscribe_time 15_000
 
-  def start_link(_) do
-    GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
-  end
+  def start_link(_), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
 
   def init(_) do
     # для безопасного отключения
@@ -45,6 +43,7 @@ defmodule Sender.MQ.Input do
     mq_msg
     |> parse()
     |> validate()
+    |> say_inprocess()
     |> put_to_queue()
 
     {:noreply, state}
@@ -59,9 +58,7 @@ defmodule Sender.MQ.Input do
   end
 
   # входящий канал mq topic
-  defp mq_input_topic() do
-    Application.get_env(:sender, :mq_input)
-  end
+  defp mq_input_topic(), do: Application.get_env(:sender, :mq_input)
 
   # парсим, если сломается, отловим в конце
   defp parse(mq_msg) do
@@ -73,15 +70,17 @@ defmodule Sender.MQ.Input do
 
   # валидируем
   defp validate({:error, _} = e), do: e
+  defp validate({:ok, msg_map}), do: Sender.Helper.MsgValidator.exec(msg_map)
 
-  defp validate({:ok, msg_map}) do
-    Sender.Helper.MsgValidator.exec(msg_map)
+  # говорим MQ что мы приняли сообщение на обработку
+  defp say_inprocess({:error, _} = e), do: e
+
+  defp say_inprocess({:ok, %{"id" => id} = msg}) do
+    Sender.MQ.Output.msg_inprocess(id)
+    {:ok, msg}
   end
 
   # ложим в очередь
   defp put_to_queue({:error, err_msg}), do: Logger.error(err_msg)
-
-  defp put_to_queue({:ok, msg}) do
-    Sender.Queue.Pusher.exec(msg)
-  end
+  defp put_to_queue({:ok, msg}), do: Sender.Queue.Pusher.exec(msg)
 end
