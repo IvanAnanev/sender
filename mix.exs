@@ -14,17 +14,15 @@ defmodule Sender.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
-      mod: {Sender.Application, []}
+      extra_applications: [:logger, :util_mq, :poison],
+      mod: {Sender, []}
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:benchee, "~> 0.11", only: :dev}
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
+      {:util_mq, git: "git@git.it.tender.pro:bot/util_mq.git"},
+      {:poison, "~> 3.1"}
     ]
   end
 end
