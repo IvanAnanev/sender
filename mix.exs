@@ -22,7 +22,8 @@ defmodule Sender.MixProject do
   defp deps do
     [
       {:util_mq, git: "git@git.it.tender.pro:bot/util_mq.git"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      {:gen_stage, "~> 0.12"}
     ]
   end
 end

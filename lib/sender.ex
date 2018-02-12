@@ -16,7 +16,9 @@ defmodule Sender do
       {Sender.Queue.Wechat, []},
       {Sender.Queue.Pusher, []},
       {Sender.MQ.Input, []},
-      {Sender.MQ.Output, []}
+      {Sender.MQ.Output, []},
+      {Sender.Core.QueueHandler, []},
+      {Sender.Core.MsgHandlerSupervisor, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
