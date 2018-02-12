@@ -17,8 +17,8 @@ defmodule Sender do
       {Sender.Queue.Pusher, []},
       {Sender.MQ.Input, []},
       {Sender.MQ.Output, []},
-      {Sender.Core.QueueHandler, []},
-      {Sender.Core.MsgHandlerSupervisor, []}
+      {Sender.Core.Email.QueueHandler, []},
+      {Sender.Core.Email.MsgHandlerSupervisor, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
