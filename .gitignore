@@ -24,3 +24,7 @@ sender2-*.tar
 
 # queue dumps
 /queue_dumps/
+
+# configs
+/config/dev.exs
+/config/test.exs
