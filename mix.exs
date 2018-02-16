@@ -14,7 +14,10 @@ defmodule Sender.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :util_mq, :poison, :bamboo, :bamboo_smtp],
+      extra_applications: [
+        :logger, :util_mq, :poison, :bamboo,
+        :bamboo_smtp, :httpoison
+      ],
       mod: {Sender, []}
     ]
   end
@@ -25,7 +28,8 @@ defmodule Sender.MixProject do
       {:poison, "~> 3.1"},
       {:gen_stage, "~> 0.12"},
       {:bamboo, "~> 0.8"},
-      {:bamboo_smtp, "~> 1.4.0"}
+      {:bamboo_smtp, "~> 1.4.0"},
+      {:httpoison, "~> 1.0"}
     ]
   end
 end

@@ -32,9 +32,7 @@ defmodule Sender.Core.Email.MsgHandler do
   end
 
   # отправитель
-  defp from() do
-    Application.get_env(:sender, Sender.Core.Email.Mailer)[:username]
-  end
+  defp from(), do: Application.get_env(:sender, Sender.Core.Email.Mailer)[:username]
 
   # отправляем письмо
   defp send_email(_email, try_count) when try_count == @repeat_count, do: :error
