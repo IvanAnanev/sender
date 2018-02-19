@@ -4,37 +4,65 @@ defmodule Sender.Core.Sms.MsgHandler do
   """
   require Logger
 
+  # 5 повторов
+  @repeat_count 5
+  # 10 секунд
+  @repeat_time 10_000
+
   def start_link(msg) do
     Task.start_link(fn ->
       msg
-      |> make_request_to_send()
-      |> parse_body()
-      |> parse_body_status_code()
-      |> parse_sms_status_code()
+      |> prepare_sms()
+      |> send_sms(0)
       |> log_and_send_to_mq(msg)
     end)
   end
 
-  # запрос к АПИ на отправку
-  defp make_request_to_send(msg) do
-    msg
-    |> make_url()
-    |> HTTPoison.get()
-  end
-
-  # адрес АПИ для запроса
-  defp make_url(msg) do
-    text = msg["msg"]["text"]
-    recipient = msg["recipient"]
-    url = sms_cfg()[:api_url]
-    api_id = sms_cfg()[:api_key]
-    from = sms_cfg()[:from]
-
-    "#{url}/send?api_id=#{api_id}&to=#{recipient}&msg=#{URI.encode_www_form(text)}&json=1&from=#{from}"
+  # подготавливаем смс
+  defp prepare_sms(msg) do
+    [
+      api_id: sms_cfg()[:api_key],
+      to: msg["recipient"],
+      msg: msg["msg"]["text"],
+      json: 1,
+      from: sms_cfg()[:from]
+    ]
   end
 
   # смс шлюз конфиг
   defp sms_cfg(), do: Application.get_env(:sender, :sms)
+
+  # отправка с повтором в случае ошибки
+  defp send_sms(_sms, try_count) when try_count == @repeat_count do
+    {:error, "Can't send sms after #{@repeat_count} tries"}
+  end
+
+  defp send_sms(sms, try_count) do
+    case make_send_sms(sms) do
+      {:ok, _} ->
+        :ok
+
+      {:error, err_msg} ->
+        Logger.error(err_msg)
+        :timer.sleep(@repeat_time)
+        send_sms(sms, try_count + 1)
+    end
+  end
+
+  # отправка и считывание ответа
+  defp make_send_sms(sms) do
+    url = send_sms_url()
+
+    HTTPoison.get(url, [], params: sms)
+    |> parse_body()
+    |> parse_body_status_code()
+    |> parse_sms_status_code()
+  end
+
+  # адрес АПИ для отправки смс
+  defp send_sms_url() do
+    "#{sms_cfg()[:api_url]}/send"
+  end
 
   # парсим ответ от АПИ
   defp parse_body({:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
@@ -86,7 +114,7 @@ defmodule Sender.Core.Sms.MsgHandler do
   end
 
   # делаем лог и отправляем в mq статус
-  defp log_and_send_to_mq({:ok, _}, msg) do
+  defp log_and_send_to_mq(:ok, msg) do
     Logger.info("The msg #{inspect(msg)} was sent")
     Sender.MQ.Output.msg_sent(msg["id"])
   end

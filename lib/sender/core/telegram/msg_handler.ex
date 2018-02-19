@@ -26,6 +26,7 @@ defmodule Sender.Core.Telegram.MsgHandler do
     ]
   end
 
+  # отправка с повтором в случае ошибки
   defp send_message(_msg, try_count) when try_count == @repeat_count do
     {:error, "Can't send message after #{@repeat_count} tries"}
   end
