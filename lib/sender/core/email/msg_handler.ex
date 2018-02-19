@@ -10,7 +10,7 @@ defmodule Sender.Core.Email.MsgHandler do
   # 5 повторов
   @repeat_count 5
   # 10 секунд
-  @repeat_time 1_000
+  @repeat_time 10_000
 
   def start_link(msg) do
     Task.start_link(fn ->

@@ -17,7 +17,10 @@ defmodule Sender do
       {Sender.Core.Sms.QueueHandler, []},
       {Sender.Core.Sms.MsgHandlerSupervisor, []},
       {Sender.Core.Telegram.QueueHandler, []},
-      {Sender.Core.Telegram.MsgHandlerSupervisor, []}
+      {Sender.Core.Telegram.MsgHandlerSupervisor, []},
+      {Sender.Core.Wechat.AccessToken, []},
+      {Sender.Core.Wechat.QueueHandler, []},
+      {Sender.Core.Wechat.MsgHandlerSupervisor, []}
     ]
 
     opts = [strategy: :one_for_one, name: Sender.Supervisor]
