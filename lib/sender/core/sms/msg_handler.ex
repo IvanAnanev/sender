@@ -30,9 +30,7 @@ defmodule Sender.Core.Sms.MsgHandler do
     api_id = sms_cfg()[:api_key]
     from = sms_cfg()[:from]
 
-    "#{url}/send?api_id=#{api_id}&to=#{recipient}&msg=#{URI.encode_www_form(text)}&json=1&from=#{
-      from
-    }"
+    "#{url}/send?api_id=#{api_id}&to=#{recipient}&msg=#{URI.encode_www_form(text)}&json=1&from=#{from}"
   end
 
   # смс шлюз конфиг
