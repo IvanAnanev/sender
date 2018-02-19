@@ -48,11 +48,11 @@ defmodule Sender.Helper.MsgValidator do
 
       date when is_bitstring(date) ->
         case DateTime.from_iso8601(date) do
-          {:ok, datetime, _} -> rep_map
-          err -> add_error(rep_map, "send_date", "can't parse datetime")
+          {:ok, _datetime, _} -> rep_map
+          _err -> add_error(rep_map, "send_date", "can't parse datetime")
         end
 
-      date ->
+      _date ->
         add_error(rep_map, "send_date", "it's bad")
     end
   end
@@ -76,7 +76,7 @@ defmodule Sender.Helper.MsgValidator do
       %{"text" => text} when is_bitstring(text) ->
         rep_map
 
-      not_msg ->
+      _not_msg ->
         add_error(rep_map, "msg", "it's bad")
     end
   end

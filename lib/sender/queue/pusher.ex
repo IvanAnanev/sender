@@ -50,15 +50,15 @@ defmodule Sender.Queue.Pusher do
     {:noreply, state}
   end
 
+  def handle_cast(_, state), do: {:noreply, state}
+
+  def handle_call(_, _, state), do: {:noreply, state}
+
   def handle_info({:push_later, mq_msg}, state) do
     push(mq_msg)
 
     {:noreply, state}
   end
-
-  def handle_cast(_, state), do: {:noreply, state}
-
-  def handle_call(_, _, state), do: {:noreply, state}
 
   def handke_info(_, state), do: {:noreply, state}
 

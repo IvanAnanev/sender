@@ -14,7 +14,10 @@ defmodule Sender.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :util_mq, :poison],
+      extra_applications: [
+        :logger, :util_mq, :poison, :bamboo,
+        :bamboo_smtp, :httpoison
+      ],
       mod: {Sender, []}
     ]
   end
@@ -22,7 +25,11 @@ defmodule Sender.MixProject do
   defp deps do
     [
       {:util_mq, git: "git@git.it.tender.pro:bot/util_mq.git"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      {:gen_stage, "~> 0.12"},
+      {:bamboo, "~> 0.8"},
+      {:bamboo_smtp, "~> 1.4.0"},
+      {:httpoison, "~> 1.0"}
     ]
   end
 end

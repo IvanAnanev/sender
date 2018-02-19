@@ -49,7 +49,7 @@ defmodule Sender.Queue.Base do
       def push(priority_index, msg), do: GenServer.cast(__MODULE__, {:push, priority_index, msg})
 
       # забираем из нашей очереди msg
-      def pull(), do: GenServer.call(__MODULE__, :pull)
+      def pull(), do: GenServer.call(__MODULE__, :pull, :infinity)
 
       # Callbacks
 
