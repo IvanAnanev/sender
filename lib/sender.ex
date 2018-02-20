@@ -5,22 +5,24 @@ defmodule Sender do
 
   def start(_type, _args) do
     children = [
-      {Sender.Queue.Email, []},
-      {Sender.Queue.Sms, []},
-      {Sender.Queue.Telegram, []},
-      {Sender.Queue.Wechat, []},
+      {Sender.Queue.Email.First, []},
+      {Sender.Queue.Email.Second, []},
+      {Sender.Queue.Email.Controller, []},
+      # {Sender.Queue.Sms, []},
+      # {Sender.Queue.Telegram, []},
+      # {Sender.Queue.Wechat, []},
       {Sender.Queue.Pusher, []},
       {Sender.MQ.Input, []},
       {Sender.MQ.Output, []},
       {Sender.Core.Email.QueueHandler, []},
       {Sender.Core.Email.MsgHandlerSupervisor, []},
-      {Sender.Core.Sms.QueueHandler, []},
-      {Sender.Core.Sms.MsgHandlerSupervisor, []},
-      {Sender.Core.Telegram.QueueHandler, []},
-      {Sender.Core.Telegram.MsgHandlerSupervisor, []},
-      {Sender.Core.Wechat.AccessToken, []},
-      {Sender.Core.Wechat.QueueHandler, []},
-      {Sender.Core.Wechat.MsgHandlerSupervisor, []}
+      # {Sender.Core.Sms.QueueHandler, []},
+      # {Sender.Core.Sms.MsgHandlerSupervisor, []},
+      # {Sender.Core.Telegram.QueueHandler, []},
+      # {Sender.Core.Telegram.MsgHandlerSupervisor, []},
+      # {Sender.Core.Wechat.AccessToken, []},
+      # {Sender.Core.Wechat.QueueHandler, []},
+      # {Sender.Core.Wechat.MsgHandlerSupervisor, []}
     ]
 
     opts = [strategy: :one_for_one, name: Sender.Supervisor]

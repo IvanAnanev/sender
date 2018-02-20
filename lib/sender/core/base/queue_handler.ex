@@ -42,7 +42,7 @@ defmodule Sender.Core.Base.QueueHandler do
       end
 
       defp dispatch_msgs(demand, msgs) do
-        case @queue.pull() do
+        case @queue.puller().pull() do
           :empty ->
             # очередь пуста, спросим о наличие сообщений через @shedule_time
             shedule()

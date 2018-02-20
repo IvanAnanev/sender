@@ -10,10 +10,10 @@ defmodule Sender.Queue.Pusher do
   require Logger
 
   @queue_type_map %{
-    "email" => Sender.Queue.Email,
-    "sms" => Sender.Queue.Sms,
-    "telegram" => Sender.Queue.Telegram,
-    "wechat" => Sender.Queue.Wechat
+    "email" => Sender.Queue.Email.Controller,
+    "sms" => Sender.Queue.Sms.Controller,
+    "telegram" => Sender.Queue.Telegram.Controller,
+    "wechat" => Sender.Queue.Wechat.Controller
   }
 
   @proirity_index_map %{
@@ -71,7 +71,7 @@ defmodule Sender.Queue.Pusher do
 
   # определяем очередь по типу
   defp queue_for_type(type) do
-    @queue_type_map[type]
+    @queue_type_map[type].pusher()
   end
 
   # определяем индекс приоритета
