@@ -2,7 +2,7 @@ defmodule Sender.Core.Base.QueueHandler do
   @moduledoc """
   Магия GenStage расшаренная через макрос.
 
-  Разгребает очередь :queue_module и закидывает в ConsumerSupervisor
+  Разгребает очередь :queue_controller и закидывает в ConsumerSupervisor
 
   Переодический опрос через :shedule_time
 
@@ -10,7 +10,7 @@ defmodule Sender.Core.Base.QueueHandler do
   module
      use Sender.Core.Base.QueueHandler,
       shedule_time: 1_000,
-      queue_module: Sender.Queue.Email
+      queue_controller: Sender.Queue.Email.Controller
 
   app tree
       {Sender.Core.Email.QueueHandler, []},
@@ -21,7 +21,7 @@ defmodule Sender.Core.Base.QueueHandler do
       use GenStage
 
       @shedule_time unquote(opts)[:shedule_time]
-      @queue unquote(opts)[:queue_module]
+      @queue unquote(opts)[:queue_controller]
 
       def start_link(_), do: GenStage.start_link(__MODULE__, :ok, name: __MODULE__)
 
@@ -42,6 +42,8 @@ defmodule Sender.Core.Base.QueueHandler do
       end
 
       defp dispatch_msgs(demand, msgs) do
+        # puller() забирает ссылку из контролера на очередь которая сейчас раздает
+        # pull() забирает сообщение из очереди
         case @queue.puller().pull() do
           :empty ->
             # очередь пуста, спросим о наличие сообщений через @shedule_time
