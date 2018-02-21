@@ -17,7 +17,11 @@ defmodule Sender do
       {Sender.Queue.Telegram.First, []},
       {Sender.Queue.Telegram.Second, []},
       {Sender.Queue.Telegram.Controller, []},
-      # {Sender.Queue.Wechat, []},
+      # wechat очередь
+      {Sender.Queue.Wechat.First, []},
+      {Sender.Queue.Wechat.Second, []},
+      {Sender.Queue.Wechat.Controller, []},
+      # сортировщик по очередям
       {Sender.Queue.Pusher, []},
       # mq сервисы
       {Sender.MQ.Input, []},
@@ -31,9 +35,10 @@ defmodule Sender do
       # gen_stage конвеер telegram
       {Sender.Core.Telegram.QueueHandler, []},
       {Sender.Core.Telegram.MsgHandlerSupervisor, []},
-      # {Sender.Core.Wechat.AccessToken, []},
-      # {Sender.Core.Wechat.QueueHandler, []},
-      # {Sender.Core.Wechat.MsgHandlerSupervisor, []}
+      # gen_stage конвеер wechat
+      {Sender.Core.Wechat.AccessToken, []},
+      {Sender.Core.Wechat.QueueHandler, []},
+      {Sender.Core.Wechat.MsgHandlerSupervisor, []}
     ]
 
     opts = [strategy: :one_for_one, name: Sender.Supervisor]
