@@ -46,14 +46,15 @@ defmodule Sender.Queue.Base do
       # API
 
       # толкаем в нашу очередь сообщение msg по приоритету priority_index
-      def push(priority_index, msg), do: GenServer.cast(__MODULE__, {:push, priority_index, msg})
+      def push(priority_index, msg), do: GenServer.call(__MODULE__, {:push, priority_index, msg})
 
       # забираем из нашей очереди msg
-      def pull(), do: GenServer.call(__MODULE__, :pull, :infinity)
+      def pull(), do: GenServer.call(__MODULE__, :pull)
 
       # Callbacks
+      def handle_cast(_, state), do: {:noreply, state}
 
-      def handle_cast({:push, priority_index, msg}, state) do
+      def handle_call({:push, priority_index, msg}, _from, state) do
         queue =
           case :ets.lookup(@table, priority_index) do
             [] -> :queue.in(msg, :queue.new())
@@ -61,10 +62,9 @@ defmodule Sender.Queue.Base do
           end
 
         :ets.insert(@table, {priority_index, queue})
-        {:noreply, state}
-      end
 
-      def handle_cast(_, state), do: {:noreply, state}
+        {:reply, :ok, state}
+      end
 
       def handle_call(:pull, _from, state) do
         response =
