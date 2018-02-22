@@ -60,7 +60,7 @@ defmodule Sender.Core.Telegram.MsgHandler do
   defp telegram_cfg(), do: Application.get_env(:sender, :telegram)
 
   # парсим ответ
-  defp parse_answer({:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
+  defp parse_answer({:ok, %HTTPoison.Response{status_code: 200}}) do
     :ok
   end
 

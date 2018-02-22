@@ -1,0 +1,42 @@
+version: '2'
+services:
+  app:
+    container_name: ${PROJECT}
+    image: tenderpro/debian_for_elixir_rel:0.1
+    networks:
+      utils_network:
+        aliases:
+          - nats
+      web:
+    restart: always
+    volumes:
+      - ./_build:/home/app
+      - queue_dumps:/queue_dumps
+    environment:
+      # - REPLACE_OS_VARS=true
+      - MIX_ENV=prod
+      - PROJECT=${PROJECT}
+      - APPUSER=${APP_USER_RUN}
+      - MQ_INPUT=${MQ_INPUT}
+      - MQ_OUTPUT=${MQ_OUTPUT}
+      - NATS_HOST=${NATS_HOST}
+      - EMAIL_USER_NAME=${EMAIL_USER_NAME}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - SMSRU_API_KEY=${SMSRU_API_KEY}
+      - SMSRU_FROM=${SMSRU_FROM}
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      - WECHAT_APP_ID=${WECHAT_APP_ID}
+      - WECHAT_APP_SECRET=${WECHAT_APP_SECRET}
+    command:
+      /home/app/prod/rel/sender/bin/sender foreground
+
+volumes:
+  queue_dumps:
+
+networks:
+  web:
+    external:
+      name: ${DCAPE_NET}
+  utils_network:
+    external:
+      name: utils_network

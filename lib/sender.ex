@@ -4,6 +4,8 @@ defmodule Sender do
   use Application
 
   def start(_type, _args) do
+    Confex.resolve_env!(:sender)
+
     children = [
       # email очередь
       {Sender.Queue.Email.First, []},
