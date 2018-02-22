@@ -15,7 +15,7 @@ defmodule Sender.MixProject do
   def application do
     [
       extra_applications: [
-        :logger, :util_mq, :poison, :bamboo,
+        :confex, :logger, :util_mq, :poison, :bamboo,
         :bamboo_smtp, :httpoison, :nats, :plug
       ],
       mod: {Sender, []}
@@ -30,6 +30,7 @@ defmodule Sender.MixProject do
       {:bamboo, "~> 0.8"},
       {:bamboo_smtp, "~> 1.4.0"},
       {:httpoison, "~> 1.0"},
+      {:confex, "~> 3.3.1"},
       {:distillery, "~> 1.5", runtime: false}
     ]
   end
