@@ -28,11 +28,6 @@ PROJECT_NAME       ?= $(PROJECT)
 DCAPE_PROJECT_NAME ?= dcape
 # dcape network attach to
 DCAPE_NET          ?= $(DCAPE_PROJECT_NAME)_default
-# Название директории для хранения dets
-DETS_PATH          ?= $(PROJECT)_dets
-# Пароль и логин для администрирования шаблонами
-ADMIN_NAME				 ?= su123
-ADMIN_PASSWORD		 ?= $(shell < /dev/urandom tr -dc A-Za-z0-9 | head -c14; echo)
 
 # elixir docker image
 ELIXIR_IMAGE       ?= tenderpro/elixir:0.2
@@ -59,9 +54,6 @@ PROJECT_NAME=$(PROJECT_NAME)
 DCAPE_NET=$(DCAPE_NET)
 # Название директории для хранения dets
 DETS_PATH=$(DETS_PATH)
-# Пароль и логин для администрирования шаблонами
-ADMIN_NAME=$(ADMIN_NAME)
-ADMIN_PASSWORD=$(ADMIN_PASSWORD)
 
 # elixir docker image
 ELIXIR_IMAGE=$(ELIXIR_IMAGE)
