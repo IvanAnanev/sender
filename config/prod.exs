@@ -25,8 +25,8 @@ config :sender, Sender.Core.Email.Mailer,
 
 config :sender, :sms,
   api_url: "https://sms.ru/sms",
-  api_key: {:system, :string, "SMSRU_API_KEY", nil},
-  from: {:system, :string, "SMSRU_FROM", nil}
+  api_key: {:system, :string, "SMSRU_API_KEY", nil}
+  # from: {:system, :string, "SMSRU_FROM", nil}
 
 config :sender, :telegram,
   api_url: "https://api.telegram.org",
