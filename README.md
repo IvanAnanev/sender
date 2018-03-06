@@ -1,6 +1,7 @@
 # Sender
 
-**TODO: Add description**
+## Архитектура
+![arch](architecture.png)
 
 ## Installation
 
