@@ -24,9 +24,10 @@ defmodule Sender.Queue.Base do
   """
   defmacro __using__(opts) do
     quote location: :keep do
-      # используем опцию shutdown: :infinity для механизма
+      # используем опцию shutdown: 60_000 для механизма
       # сохранения очереди на диск при выключении
-      use GenServer, shutdown: :infinity
+      # timeout 1 минута
+      use GenServer, shutdown: 60_000
       require Logger
 
       # прокидываем название
