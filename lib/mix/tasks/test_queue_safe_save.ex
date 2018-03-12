@@ -8,7 +8,7 @@ defmodule Mix.Tasks.TestQueueSafeSave do
 
   @shortdoc "test queue safe save"
   def run(_) do
-    Logger.info "test queue safe save"
+    Logger.info("test queue safe save")
 
     # поднимаем очередь
     {:ok, queue_pid} = GenServer.start_link(Queue, [])
@@ -25,17 +25,19 @@ defmodule Mix.Tasks.TestQueueSafeSave do
     # поднимаем очередь опять
     {:ok, restart_queue_pid} = GenServer.start_link(Queue, [])
 
-    result = 1..5
-      |> Enum.reduce([], fn(_x, acc) -> [GenServer.call(restart_queue_pid, :pull) | acc] end)
+    result =
+      1..5
+      |> Enum.reduce([], fn _x, acc -> [GenServer.call(restart_queue_pid, :pull) | acc] end)
       |> Enum.reverse()
 
     case result do
       ["0_1", "0_2", "55", "99", :empty] ->
-        Logger.info "Test good!"
-        result |> inspect |> Logger.info
+        Logger.info("Test good!")
+        result |> inspect |> Logger.info()
+
       _ ->
-        Logger.error "Test bad!"
-        result |> inspect |> Logger.error
+        Logger.error("Test bad!")
+        result |> inspect |> Logger.error()
     end
 
     GenServer.stop(restart_queue_pid)
