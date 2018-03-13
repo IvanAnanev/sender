@@ -11,7 +11,7 @@ services:
     restart: always
     volumes:
       - ./_build:/home/app
-      - queue_dumps:/queue_dumps
+      - queue_dumps:/home/app/prod/rel/sender/queue_dumps
     environment:
       # - REPLACE_OS_VARS=true
       - MIX_ENV=prod

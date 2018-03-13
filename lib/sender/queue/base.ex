@@ -102,7 +102,6 @@ defmodule Sender.Queue.Base do
 
       # инитим ets таблицу
       defp init_ets_table() do
-        System.cwd |> inspect |> Logger.info
         # загружаем из дампа
         case :ets.file2tab(dump_file()) do
           {:ok, _} ->
