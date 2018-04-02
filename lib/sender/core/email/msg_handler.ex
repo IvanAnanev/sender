@@ -27,7 +27,7 @@ defmodule Sender.Core.Email.MsgHandler do
       to: msg["recipient"],
       from: from(),
       subject: msg["msg"]["subject"],
-      text_body: msg["msg"]["text"]
+      html_body: msg["msg"]["text"]
     )
   end
 
